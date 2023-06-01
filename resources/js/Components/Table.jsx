@@ -8,9 +8,9 @@ export default function(){
                 <tbody>
 
                 <tr className="border-b">
-                    <th className="text-left p-3 px-5">Name</th>
-                    <th className="text-left p-3 px-5">Email</th>
-                    <th className="text-left p-3 px-5">Role</th>
+                    <th className="text-left p-3 px-5">Station</th>
+                    <th className="text-left p-3 px-5">Temperature</th>
+                    <th className="text-left p-3 px-5">Wind speed</th>
                     <th></th>
                 </tr>
 
