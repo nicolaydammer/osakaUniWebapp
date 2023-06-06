@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Helpers\WeatherApi;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -41,13 +42,21 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $responseData = WeatherApi::getInstance()->authenticate(
+            $this['email'],
+            $this['password'],
+        );
+
+        if (! $responseData) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
         }
+
+        Session::put('user', $responseData['user']);
+        Session::put('token', $responseData['token']);
 
         RateLimiter::clear($this->throttleKey());
     }
