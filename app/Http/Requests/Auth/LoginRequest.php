@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use App\Helpers\WeatherApi;
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\RateLimiter;
@@ -55,8 +56,15 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        Session::put('user', $responseData['user']);
-        Session::put('token', $responseData['token']);
+        $user = User::firstOrCreate(
+            ['email' => $responseData['email']],
+            [
+                'name' => $responseData['name'],
+                'api_token' => $responseData['token'],
+            ],
+        );
+
+
 
         RateLimiter::clear($this->throttleKey());
     }
