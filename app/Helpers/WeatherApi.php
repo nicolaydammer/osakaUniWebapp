@@ -3,8 +3,8 @@
 namespace App\Helpers;
 
 use App\Exceptions\WeatherApiException;
+use App\Helpers\WeatherApi\AuthenticationResponse;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Session;
 
 class WeatherApi
 {
@@ -32,33 +32,13 @@ class WeatherApi
         return new self();
     }
 
-    public function hasToken(): bool
+    public function authenticate(string $email, string $password): AuthenticationResponse
     {
-        return Session::has('token');
-    }
-
-    public function getToken(): string
-    {
-        $token = Session::get('token');
-
-        if (empty($token)) {
-            throw new WeatherApiException('Authentication token is not set.');
-        }
-
-        return $token;
-    }
-
-    public function authenticate(string $email, string $password): bool | array
-    {
-        $response = Http::post($this->apiUrl . '/login', [
-            'email' => $email,
-            'password' => $password,
-        ]);
-
-        if ($response->status() !== 200) {
-            return false;
-        }
-
-        return $response->json();
+        return new AuthenticationResponse(
+            Http::post($this->apiUrl . '/login', [
+                'email' => $email,
+                'password' => $password,
+            ])
+        );
     }
 }

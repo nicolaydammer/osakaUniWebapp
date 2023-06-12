@@ -2,12 +2,13 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Enums\Role;
 use App\Helpers\WeatherApi;
 use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -43,12 +44,12 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        $responseData = WeatherApi::getInstance()->authenticate(
+        $response = WeatherApi::getInstance()->authenticate(
             $this['email'],
             $this['password'],
         );
 
-        if (! $responseData) {
+        if (! $response->isSuccessful()) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -57,14 +58,20 @@ class LoginRequest extends FormRequest
         }
 
         $user = User::firstOrCreate(
-            ['email' => $responseData['email']],
+            ['email' => $response->getEmail()],
             [
-                'name' => $responseData['name'],
-                'api_token' => $responseData['token'],
+                'name' => $response->getName(),
+                'api_token' => $response->getToken(),
             ],
         );
 
+        $user->addRoles(
+            $response
+                ->getAbilities()
+                ->map(fn (string $role) => Role::from($role))
+        );
 
+        Auth::login($user);
 
         RateLimiter::clear($this->throttleKey());
     }
