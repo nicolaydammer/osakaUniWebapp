@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Api\WeatherApi;
 use App\Enums\Role;
-use App\Helpers\WeatherApi;
 use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
@@ -61,9 +61,10 @@ class LoginRequest extends FormRequest
             ['email' => $response->getEmail()],
             [
                 'name' => $response->getName(),
-                'api_token' => $response->getToken(),
             ],
         );
+
+        $user->update(['api_token' => $response->getToken()]);
 
         $user->addRoles(
             $response
