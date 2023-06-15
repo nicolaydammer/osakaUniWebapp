@@ -122,6 +122,8 @@ export default function Authenticated({ user, header, children }) {
             )}
 
             <main>{children}</main>
+
         </div>
+
     );
 }
