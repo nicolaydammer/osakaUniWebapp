@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Api\WeatherApi;
+use App\Enums\Role;
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -41,13 +44,35 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $response = WeatherApi::getInstance()->authenticate(
+            $this['email'],
+            $this['password'],
+        );
+
+        if (! $response->isSuccessful()) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
         }
+
+        $user = User::firstOrCreate(
+            ['email' => $response->getEmail()],
+            [
+                'name' => $response->getName(),
+            ],
+        );
+
+        $user->update(['api_token' => $response->getToken()]);
+
+        $user->addRoles(
+            $response
+                ->getAbilities()
+                ->map(fn (string $role) => Role::from($role))
+        );
+
+        Auth::login($user);
 
         RateLimiter::clear($this->throttleKey());
     }
