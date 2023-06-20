@@ -81,9 +81,11 @@ const data = [
     }
 ];
 
-export default function Dashboard({ auth }) {
-    useEffect(() => {
+export default function Dashboard({ auth, tempAndDownfall, topWindSpeeds }) {
 
+    console.log(tempAndDownfall, topWindSpeeds);
+
+    useEffect(() => {
         (async () => {
 
             const topology = await fetch(
