@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Slider from "react-slick";
+import MapEurope from "@/Components/MapEurope.jsx";
+import MapJapan from "@/Components/MapJapan.jsx";
 
 export default class SimpleSlider extends Component {
     render() {
@@ -16,11 +18,11 @@ export default class SimpleSlider extends Component {
                 <Slider {...settings}>
                     <div>
                         <h3>Europe</h3>
-                        <heatmap></heatmap>
+                        <MapEurope></MapEurope>
                     </div>
                     <div>
                         <h3>Japan</h3>
-                        <heatmap></heatmap>
+                        <MapJapan></MapJapan>
                     </div>
                 </Slider>
             </div>
