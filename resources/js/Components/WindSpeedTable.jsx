@@ -5,11 +5,12 @@ export function WindSpeedTable({topWindSpeeds}) {
         return {country, city, wind};
     }
     const data = topWindSpeeds
+    console.log(data)
 
     let rows = []
 
-    for (const i in data) {
-       rows.push(createData(data[i].station.nearest_location.administrative_region1, data[i].station.nearest_location.administrative_region2, data[i].wind_speed))
+    for (const i in topWindSpeeds) {
+       rows.push(createData(data[i].station.geolocation.country.country, data[i].station.geolocation.city, data[i].wind_speed))
     }
 
     let tableRows = rows.map((row) => (
