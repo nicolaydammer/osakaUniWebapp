@@ -68,6 +68,7 @@ const JapanMap = () => {
                         type: 'mappoint',
                         name: 'Custom Point',
                         data: [
+                            //TODO: hier moeten de stations toegevoegd worden.
                             { name: 'Custom Point', lat: 35.6895, lon: 139.6917, value: 50 },
                         ],
                         color: 'red',
