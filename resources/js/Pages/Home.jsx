@@ -81,9 +81,7 @@ const data = [
     }
 ];
 
-export default function Dashboard({ auth, tempAndDownfall, topWindSpeeds }) {
-
-    console.log(tempAndDownfall, topWindSpeeds);
+export default function Home({ auth, tempAndDownfall, topWindSpeeds }) {
 
     useEffect(() => {
         (async () => {
