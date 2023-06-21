@@ -6,6 +6,7 @@ import HighchartsReact from 'highcharts-react-official';
 // Load Highcharts map module
 HighchartsMap(Highcharts);
 
+
 const JapanMap = () => {
     useEffect(() => {
         const fetchMapData = async () => {

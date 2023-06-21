@@ -194,6 +194,7 @@ const EuropeMap = () => {
     }, []); // empty dependency array to run only once
 
     return <div id="container"></div>;
+
 };
 
 export default EuropeMap;
