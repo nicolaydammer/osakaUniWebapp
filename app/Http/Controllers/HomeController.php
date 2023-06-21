@@ -12,8 +12,8 @@ class HomeController extends Controller
         $api = WeatherApi::getInstance();
 
         return Inertia::render('Home', [
-            'tempAndDownfall' => $api->fetchTempAndDownfall(),
-            'topWindSpeeds' => $api->fetchTopWindSpeeds(),
+            'tempAndDownfall' => $api->fetchTempAndDownfall()->getRecords(),
+            'topWindSpeeds' => $api->fetchTopWindSpeeds()->getRecords(),
         ]);
     }
 }
