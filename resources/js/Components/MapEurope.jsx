@@ -130,19 +130,6 @@ const EuropeMap = () => {
                     }
                 },
 
-                // colorAxis: {
-                //     min: -25,
-                //     max: 40,
-                //     labels: {
-                //         format: '{value}°C'
-                //     },
-                //     stops: [
-                //         [0, '#0000ff'],
-                //         [0.3, '#6da5ff'],
-                //         [0.6, '#ffff00'],
-                //         [1, '#ff0000']
-                //     ]
-                // },
                 colorAxis: {
                     min: 0,
                 },

@@ -23,6 +23,7 @@ const JapanMap = () => {
             const options = {
                 chart: {
                     map: topology,
+                    height: 400
                 },
                 title: {
                     text: 'Rainfall in Japan',
