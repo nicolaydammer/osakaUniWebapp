@@ -1,18 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsMap from 'highcharts/modules/map';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import EuropeMap from "@/Components/MapEurope";
+import EuropeMap from '@/Components/MapEurope.jsx';
+import JapanMap from '@/Components/MapJapan.jsx';
 import {WindSpeedTable} from "@/Components/WindSpeedTable.jsx";
 
 
 // Initialize the Highcharts modules
 HighchartsMap(Highcharts);
 
-// Data for the chart
-
 export default function Dashboard({ auth, tempAndDownfall, topWindSpeeds }) {
+    const [showJapanMap, setShowJapanMap] = useState(true);
+
+    const handleToggleMap = () => {
+        setShowJapanMap(!showJapanMap);
+    };
 
     return (
         <AuthenticatedLayout
@@ -22,18 +26,25 @@ export default function Dashboard({ auth, tempAndDownfall, topWindSpeeds }) {
             <Head>
                 <title>Home</title>
             </Head>
-            <EuropeMap></EuropeMap>
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            You're logged in!
-                            <div id="container" style={{ height: '500px', margin: '0 auto' }}>
-                                <WindSpeedTable topWindSpeeds={topWindSpeeds}></WindSpeedTable>
-                            </div>
+                            {showJapanMap ? <JapanMap /> : <EuropeMap />}
 
+                            <button
+                                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                onClick={handleToggleMap}
+                            >
+                                {showJapanMap ? 'Show Europe Map' : 'Show Japan Map'}
+                            </button>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div className="flex justify-center mt-4">
+                <div id="container" style={{ height: '500px', margin: '0 auto' }}>
+                    <WindSpeedTable topWindSpeeds={topWindSpeeds}></WindSpeedTable>
                 </div>
             </div>
         </AuthenticatedLayout>

@@ -12,8 +12,6 @@ export function WindSpeedTable({topWindSpeeds}) {
        rows.push(createData(data[i].station.nearest_location.administrative_region1, data[i].station.nearest_location.administrative_region2, data[i].wind_speed))
     }
 
-    console.log(rows)
-
     let tableRows = rows.map((row) => (
         <tr>
             <td component="th" scope="row">{row.country}</td>
