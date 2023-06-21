@@ -2,7 +2,9 @@
 
 namespace App\Api;
 
+use App\Api\Response\ApiResponse;
 use App\Api\Response\AuthenticationResponse;
+use App\Api\Response\StoreUserResponse;
 use App\Api\Response\TemperatureAndDownfallResponse;
 use App\Api\Response\TopWindSpeedsResponse;
 use App\Exceptions\WeatherApiException;
@@ -42,6 +44,16 @@ class WeatherApi
             Http::post($this->apiUrl . '/login', [
                 'email' => $email,
                 'password' => $password,
+            ])
+        );
+    }
+
+    public function storeUser(string $email, string $name): StoreUserResponse
+    {
+        return new StoreUserResponse(
+            Http::post($this->apiUrl . '/register', [
+                'email' => $email,
+                'name' => $name,
             ])
         );
     }
