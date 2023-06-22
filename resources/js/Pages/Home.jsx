@@ -13,7 +13,6 @@ HighchartsMap(Highcharts);
 
 export default function Dashboard({ auth, tempAndDownfall, topWindSpeeds }) {
     const [showJapanMap, setShowJapanMap] = useState(true);
-
     const handleToggleMap = () => {
         setShowJapanMap(!showJapanMap);
     };
@@ -30,7 +29,7 @@ export default function Dashboard({ auth, tempAndDownfall, topWindSpeeds }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            {showJapanMap ? <JapanMap /> : <EuropeMap />}
+                            {showJapanMap ? <JapanMap japanPrecipation={tempAndDownfall.japan} /> : <EuropeMap />}
 
                             <button
                                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"

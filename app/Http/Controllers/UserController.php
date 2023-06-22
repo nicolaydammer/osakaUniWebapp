@@ -34,12 +34,12 @@ class UserController extends Controller
         if ($apiResponse->isSuccessful()) {
             $generatedPassword = $apiResponse->getGeneratedPassword();
 
-            User::create([
-                'email' => $request['email'],
-                'name' => $request['name'],
-                'password' => Hash::make($generatedPassword),
-                'generated_password' => $generatedPassword,
-            ]);
+            $user = new User();
+            $user->email = $request['email'];
+            $user->name = $request['name'];
+            $user->password = Hash::make($generatedPassword);
+            $user->generated_password = $generatedPassword;
+            $user->save();
         }
 
         return to_route('users.index');
